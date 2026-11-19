@@ -1,18 +1,6 @@
 """
 Replication of Sec. V (Empirical validation)
 Figs. 1a, 1b (Gaussian), 3a, 3b (Laplace)
-
-Setup from paper:
-  * sensitivity profiles  lambda_i ∝ i (linear), i^2 (quadratic), e^i (exponential), uniform, one-hot
-  * Gaussian: lambda normalised so ||lambda||_2 = 1;  Laplace: ||lambda||_1 = 1   (Fig. 4: ||lambda||_2 = 1 for both)
-  * decoupled coordinates: Delta_p = ||lambda||_p  (Remark 1)
-  * delta = 1e-6; Fig. 1a/3a: K = 20, eps in [0.2, 1.2]; Fig. 1b/3b/4: eps = 0.5, K = 1..25
-  * metric = theoretical MSE of Table I, in dB
-
-Formulas (Table I):
-  Gaussian i.i.d.  MSE = K * Delta_2^2 / mu0^2          i.n.i.d.  MSE = ||lambda||_1^2 / mu0^2       (Thm 4)
-  Laplace  i.i.d.  MSE = 2 K Delta_1^2 / eps^2          i.n.i.d.  MSE = 2 ||lambda^(2/3)||_1^3 / eps^2 (Thm 5)
-  mu0 = largest mu with Q(eps/mu - mu/2) - e^eps Q(eps/mu + mu/2) <= delta   (problem P2)
 """
 import numpy as np
 from scipy.stats import norm
@@ -35,9 +23,9 @@ def profile(name, K):
 
 # ------------------------------------------------------------------ Table I MSEs
 def gauss_mse(lam, eps):
-    lam = lam / np.linalg.norm(lam)                       # ||lambda||_2 = 1
+    lam = lam / np.linalg.norm(lam)                       
     m2 = mu0(eps)**2
-    return len(lam) * 1.0 / m2, lam.sum()**2 / m2         # (iid, inid)
+    return len(lam) * 1.0 / m2, lam.sum()**2 / m2         
 
 def laplace_mse(lam, eps, norm_l2=False):
     lam = lam / (np.linalg.norm(lam) if norm_l2 else lam.sum())
