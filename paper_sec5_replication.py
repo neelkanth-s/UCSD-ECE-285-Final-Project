@@ -2,7 +2,7 @@
 Replication of Sec. V (Empirical validation)
 Figs. 1a, 1b (Gaussian), 3a, 3b (Laplace)
 
-Setup exactly as paper:
+Setup from paper:
   * sensitivity profiles  lambda_i ∝ i (linear), i^2 (quadratic), e^i (exponential), uniform, one-hot
   * Gaussian: lambda normalised so ||lambda||_2 = 1;  Laplace: ||lambda||_1 = 1   (Fig. 4: ||lambda||_2 = 1 for both)
   * decoupled coordinates: Delta_p = ||lambda||_p  (Remark 1)
