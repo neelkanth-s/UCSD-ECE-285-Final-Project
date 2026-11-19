@@ -1,8 +1,8 @@
 """
-Replication of Sec. V (Empirical validation) of Muthukrishnan & Kalyani, arXiv:2302.03511:
-Figs. 1a, 1b (Gaussian), 3a, 3b (Laplace), 4 (Gaussian vs Laplace), plus a Monte Carlo check.
+Replication of Sec. V (Empirical validation)
+Figs. 1a, 1b (Gaussian), 3a, 3b (Laplace)
 
-Setup exactly as in the paper:
+Setup exactly as paper:
   * sensitivity profiles  lambda_i ∝ i (linear), i^2 (quadratic), e^i (exponential), uniform, one-hot
   * Gaussian: lambda normalised so ||lambda||_2 = 1;  Laplace: ||lambda||_1 = 1   (Fig. 4: ||lambda||_2 = 1 for both)
   * decoupled coordinates: Delta_p = ||lambda||_p  (Remark 1)
@@ -44,7 +44,6 @@ def laplace_mse(lam, eps, norm_l2=False):
     d1 = lam.sum()
     return 2*len(lam)*d1**2/eps**2, 2*(lam**(2/3)).sum()**3/eps**2
 
-# scale parameters (Thm 4, Thm 5) — used for the Monte Carlo check
 def gauss_sigma_inid(lam, eps):  return np.sqrt(lam * lam.sum()) / mu0(eps)
 def laplace_beta_inid(lam, eps): return lam**(1/3) * (lam**(2/3)).sum() / eps
 
@@ -53,7 +52,6 @@ PROFILES = ["linear", "quadratic", "exponential", "one-hot"]
 STYLE = {"linear": "o", "quadratic": "D", "exponential": "s", "one-hot": "^"}
 
 def main():
-    # ---------------------------------------------------------- numbers quoted in the text
     print("=== MSE reduction at K=20 (constant over eps)  [paper value in brackets] ===")
     paper_g = {"linear": 1.145, "quadratic": 2.442, "exponential": 9.658, "one-hot": 13.01}
     paper_l = {"linear": 0.546, "quadratic": 1.39,  "exponential": 7.609}
@@ -81,7 +79,6 @@ def main():
              > gauss_mse(profile("exponential", K), 0.5)[1]]
     print(f"Fig. 4: K where exp-profile i.n.i.d. Laplace is worse than Gaussian: {worse or 'none'}  [paper: none]")
 
-    # ---------------------------------------------------------- Monte Carlo check of the formulas
     print("\n=== Monte Carlo check (K=20, eps=0.5, exponential profile, 200k draws) ===")
     rng = np.random.default_rng(0)
     lam = profile("exponential", 20)
